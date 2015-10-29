@@ -1,0 +1,262 @@
+<div class="div-notice">
+  <%= notice %>
+  <% if @note_count.to_i == 0 && @dnote_count.to_i == 0 %>
+    <%= "You have no new notification." %>
+  <% else %>
+    <%= "You have unread notifications for events which may affect your services" %>
+  <% end %>
+  <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+    <li>
+      <% if @dnote_count.to_i != 0 || @note_count.to_i != 0 %>
+        <% if @dnote_count.to_i != 0 %>
+          <span class="span-note" note="devices" style="text-decoration:underline;cursor:pointer;">
+        <% else %>
+          <span class="span-note" note="tickets" style="text-decoration:underline;cursor:pointer;">
+        <% end %>
+          <%= @note_count.to_i + @dnote_count.to_i %> Notifications
+        </span>
+      <% end %>
+    </li>
+    <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+  </ul>
+</div>
+
+<div class="content-div" style="margin-bottom:9%">
+  <h1>
+    Devices
+    <% if hp_device(current_user.email) %>
+      <%#= link_to 'New Device', new_device_path, :class=>'btn btn-primary btn-device' %>
+    <% end %>
+  </h1>
+
+  <!-- <div style="padding: 10px 0;min-width:930px;"> -->
+  <div style="padding: 10px 0;">
+    <div class="col-lg-6" style="display:inline-block;">
+      <div class="col-lg-4" style="margin-top:9px;">
+        <% if @devices.nil? || @devices.blank? %>
+          Viewing 0 to 0 of 0 <!-- Devices -->
+        <% else %>
+          Viewing 
+          <% if @page_number == 1 %> 
+            <%= 1 %>
+          <% else %>
+            <%= 1 + (@page_number.to_i - 1) * @rows.to_i %>
+          <% end %>
+          to 
+          <% if @rows.to_i*@page_number.to_i > @devices.count%>
+            <%= @devices.count %> 
+          <% else %>
+            <%= @rows.to_i*@page_number.to_i %> 
+          <% end %>
+          of <%=@devices.count%> 
+        <% end %>
+        &nbsp;&nbsp;
+      </div>
+      <div class="col-lg-8" style="position:relative;top:-11px;">
+        Displaying&nbsp;
+        <%#= form_tag('/devices/setrows', :id=>'form_device_rows', :style => 'display:inline-block;') do -%>
+          <div class="dropdown dropdown-dark" style="width:70px;top:12px;">
+            <select name="device_rows" class="dropdown-select small" id="select_device_rows">
+              <% [5,10,20,50].each do |n| %>
+                <% if @rows.to_i == n %>
+                  <option value="<%=n%>" selected="selected"><%=n%></option>
+                <% else %>
+                  <option value="<%=n%>"><%= n%></option>
+                <% end %>
+              <% end %>
+            </select>
+          </div>
+          <%#= hidden_field_tag "device_rows" %>&nbsp;
+          <%#= select_tag "combo_device_rows", options_for_select([ "5", "10", "20", "50" ], @rows) %>per page
+        <%# end -%>
+      </div>
+    </div>
+
+    <div class="col-lg-3" style="margin-top:3px;">
+      <%= will_paginate @devices, :previous_label => '<', :next_label => '>' %>
+    </div>
+
+    <div class="col-lg-3 col-filter" style="display:inline-block;text-align:right;margin-top:8px;">
+      <i class="glyphicon glyphicon-refresh" id="btn_refresh_device" style="cursor:pointer"></i>
+      &nbsp;
+      <%= button_tag(:class=>'btn btn-primary btn-reply2 btn-device', :id=>'btn_filter_devices') do %>
+        Filter&nbsp;&nbsp;<i class="glyphicon glyphicon-filter" style="font-size:14px;position:relative;top:3px;color:ine"></i>
+      <% end %>
+    </div>
+    
+  </div>
+
+  <div class="filter-div" style="display:none" id="div_device_filter">
+    <%= render 'filter' %>
+  </div>
+
+  <table class="listing" id="table_devices" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th>&nbsp;&nbsp;</th>
+        <th>Name&nbsp;<%= raw(get_sortdirection(@thd[0]))%></th>
+        <th><i class="fa fa-fw fa-laptop"></i>&nbsp;Type&nbsp;<%= raw(get_sortdirection(@thd[1]))%></th>
+        <th><i class="fa fa-fw fa-globe"></i>&nbsp;Location&nbsp;<%= raw(get_sortdirection(@thd[2]))%></th>
+        <th><i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Public IP&nbsp;<%= raw(get_sortdirection(@thd[3]))%></th>
+        <th><i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Private IP&nbsp;<%= raw(get_sortdirection(@thd[4]))%></th>
+        <th><i class="fa fa-fw fa-calendar"></i>&nbsp;Start Date&nbsp;<%= raw(get_sortdirection(@thd[5]))%></th>
+        <th>Action</th>
+        <!-- <th>Delete</th> -->
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if @devices.blank? %>
+        <tr>
+          <td></td>
+          <td colspan="7">No Devices</td>
+        </tr>
+      <% else %>
+        <% @devices.each do |device| %>
+          <tr class="real-tr">
+            <td>
+              <span>
+                <!-- &#9658; -->
+                <i class="fa fa-fw fa-angle-right" style="font-size:18px;"></i>
+              </span>
+            </td>
+            <td class="clickable"><%= processblank(device.name) %></td>
+            <td class="clickable"><%= processblank(device.device_type) %></td>
+            <td class="clickable"><%= raw(getflag_floc(device.location)) + ' ' + device.location %></td>
+            <td class="clickable"><%= processblank(device.public_ip) %></td>
+            <td class="clickable"><%= processblank(device.private_ip) %></td>
+            <td class="clickable"><%= processblank(device.created_at.to_date) %></td>
+            <td>
+              <div class="dropdown dropdown-dark sda2" style="width:150px;" id="select_device_action2">
+                <select name="request" class="dropdown-select small">
+                  <option value="">Action</option>
+                  <option value="Reboot">Reboot</option>
+                  <option value="Power On / Off">Power On / Off</option>
+                  <option value="Rename Instance">Rename Instance</option>
+                  <option value="View Audit Logs">View Audit Logs</option>
+                  <option value="Cancel Device">Cancel Device</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <!-- <tr id="servers_<%=processblank(device.name)%>_<%=processblank(device.device_type)%>_<%=processblank(device.location)%>" style="display:none;"> -->
+          <tr id="servers_<%=processblank(device.name)%>" style="display:none;">
+            <td style="border:none;background-color:transparent;"></td><!-- rgb(15, 75, 119); -->
+            <td style="border:none" colspan="8" style="padding-left:20px;">
+              <div style="content-div">
+                <% if !@servers.nil? %>
+                  <span>No Servers</span>
+                <% else %>
+
+                  <div class="col-lg-2" style="text-align:left;padding-top:20px;">
+                    <%= image_tag('server1.png', size: "120") %>
+                  </div>
+                  <div class="col-lg-6" style="padding:18px 0;">
+                    Username&nbsp;:&nbsp;&nbsp;&nbsp;
+                    <%= get_duser(device.name).username %><br/><br/>
+                    Password&nbsp;:&nbsp;&nbsp;
+                    <%= password_field_tag "Password",nil , autocomplete: "off", :class=>'form-control', :style=>'width:40%;display:inline-block', :value=>get_duser(device.name).password, :id=>'pwd_device_'+ device.id.to_s %>
+                    <%= button_tag(:class=>'btn-dshowpwd', :style=>'background-color:transparent', :id=>'btn_show_password_'+ device.id.to_s) do %>
+                      <i class="glyphicon glyphicon-question-sign" style="font-size:16px;"></i>
+                    <% end %>
+                    <br/>                      
+                    <div class="col-lg-2" style="padding:18px 0;">
+                      Tags:
+                    </div>
+                    <div class="col-lg-10" style="padding:18px 0;">
+                      <%= text_field_tag 'tag', nil, class: 'form-control', placeholder: 'Add a new Tag', :style=>'width:48%' %>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4" style="padding:18px 0;">
+                    <span>No Tickets Filed Against This Device</span>
+                  </div>
+                  
+                  <!-- Button row -->
+                  <div class="col-lg-offset-2 col-lg-6" style="padding:18px 0;">
+                    <%= link_to "Configuration", device, :class=>'btn btn-primary btn-device' %>
+                    <%= form_tag('/devices/tickets', :id=>'form_device_tickets', :style => 'display:none') do -%>
+                      <%= hidden_field_tag "device_name", nil, :value=>device.name %>
+                      <%#= select_tag "combo_device_rows", options_for_select([ "5", "10", "20", "50" ], @rows) %>per page
+                    <% end -%>
+                    <%#= link_to "Tickets", device, :class=>'btn btn-primary btn-device', :id=>'btn_dtickets' %>
+                    <%= link_to "Tickets", tickets_url, :class=>'btn btn-primary btn-device' %>
+
+                    <%= form_tag('/devices/security', :id=>'form_device_security_' + device.id.to_s , :class=>'form_device_security', :style => 'display:none') do -%>
+                      <%= hidden_field_tag "device_name", nil, :value=>device.name %>
+                      <%#= select_tag "combo_device_rows", options_for_select([ "5", "10", "20", "50" ], @rows) %>per page
+                    <% end -%>
+                    <%= link_to "Security", device, :class=>'btn btn-primary btn-device btn_dsecurity', :id=>'btn_dsecurity_' + device.id.to_s %>
+
+                    <%= form_tag('/devices/usage', :id=>'form_device_usage', :style => 'display:none') do -%>
+                      <%= hidden_field_tag "device_name", nil, :value=>device.name %>
+                    <% end -%>
+                    <%= link_to "Usage", device, :class=>'btn btn-primary btn-device', :id=>'btn_dusage' %>
+
+                    <%= form_tag('/devices/password', :id=>'form_device_password_' + device.id.to_s, :style => 'display:none') do -%>
+                      <%= hidden_field_tag "device_name", nil, :value=>device.name %>
+                      <%#= select_tag "combo_device_rows", options_for_select([ "5", "10", "20", "50" ], @rows) %>per page
+                    <% end -%>
+                    <%= link_to "Password", device, :class=>'btn btn-primary btn-device btn_dpassword', :id=>'btn_dpassword_' + device.id.to_s %>
+
+                  </div>
+
+                  <!-- <div class="col-lg-1" style="padding:18px 0;">
+                    <span>No Tickets Filed Against This Device</span>
+                  </div> -->
+                  <div class="col-lg-4" style="padding:18px 0;">
+                    <%= link_to "Add a ticket for this Device", new_ticket_path, :class=>'btn btn-primary btn-device' %>
+                  </div>
+
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+</div>
+
+<script>
+  var headertext = [],
+  headers = document.querySelectorAll('#table_devices th'),
+  tablerows = document.querySelectorAll('#table_devices th'),
+  table_body = document.querySelector('#table_devices tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+    // console.log(current.textContent);
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 2, col; col = row.cells[j]; j++) {
+      if ( headertext[j] && ( i%2 == 0 ) && (j != 7 ) )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( i%2 == 1 ) {
+        col.setAttribute('style', 'border:none;');  
+      }
+      col.setAttribute('style', 'text-align:left;');
+      // console.log(col);
+      // console.log(headertext[j]);
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+      col.setAttribute('data-th', 'Detail');  
+    }
+
+  }
+
+  $(function() {
+    $('.pagination a').attr('data-remote', 'true');
+    // $('#select_device_action2').attr('data-remote', 'true');
+    // $('#select_device_rows').attr('data-remote', 'true');
+  });
+
+</script>

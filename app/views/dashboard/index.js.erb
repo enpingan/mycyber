@@ -1,0 +1,10 @@
+
+if (jQuery('#ticket .pagination').attr('updated') == 'true') {
+  jQuery('#ticket').html("<%= j(render 'ticket') %>");
+}
+
+if (jQuery('#device .pagination').attr('updated') == 'true') {
+  jQuery('#device').html("<%= j(render 'device') %>");
+}
+
+$('.pagination a').attr('data-remote', 'true');

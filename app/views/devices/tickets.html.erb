@@ -1,0 +1,255 @@
+<!-- <div class="container" style="min-width:1053px;"> -->
+<div class="container">
+  <!-- <div class="div-notice" style="min-width:1024px;"> -->
+  <div class="div-notice">
+    <%= notice %>
+    <% if @note_count == 0 %>
+      <%= "You have no new notification." %>
+    <% else %>
+      <%= "You have unread notifications for events which may affect your services" %>
+    <% end %>
+    <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+      <% if @note_count != 0 %>
+        <li><span class="span-note" style="text-decoration:underline;cursor:pointer;"><%= @note_count%> Notifications</span></li>
+      <% end %>
+      <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+    </ul>
+  </div>
+
+  <!-- <div class="content-div" style="margin-bottom:9%;min-width:1024px;"> -->
+  <div class="content-div">
+    <h1>
+      <% if hp_ticket(current_user.username) %>
+        <%= link_to(new_ticket_path, :class=>'link-plus', :style=>'margin-top:-8px;text-decoration:none;') do %>
+          &nbsp;<i class="glyphicon glyphicon-tags" style="font-size:24px;color:yellow;"></i>
+          <i class="glyphicon glyphicon-plus" style="font-size:10px;margin-left:-8px;"></i>
+        <% end %>
+      <% end %>
+      Tickets
+    </h1>
+    <div style="text-align:right;">
+      <%= link_to 'View All Devices', devices_path, :class=>'btn btn-primary btn-device', :style=>'right:0px;margin-top:-80px;' %>    
+    </div>
+
+    <!-- <div style="padding: 10px 0;min-width:930px;"> -->
+    <div style="padding: 10px 0;">
+      <div class="col-md-6" style="display:inline-block;">
+        <div class="col-md-4" style="margin-top:8px;">
+          <% if @tickets.nil? || @tickets.blank? %>
+            Viewing 0 to 0 of 0 
+          <% else %>
+            Viewing 
+            <% if @page_number == 1 %> 
+              <%= 1 %>
+            <% else %>
+              <%= 1 + (@page_number.to_i - 1) * @rows.to_i %>
+            <% end %>
+            to
+            <% if @rows.to_i*@page_number.to_i > @ticket_count %>
+              <%= @ticket_count %> 
+            <% else %>
+              <%= @rows.to_i*@page_number.to_i %> 
+            <% end %>
+            of <%=@ticket_count%> 
+          <% end %>
+          &nbsp;&nbsp;
+        </div>
+        <!-- <div class="dropdown dropdown-dark" style="width:120px;top:12px;">
+          <select name="two" class="dropdown-select small" id="select_ticket_kind">
+            <option value="All Tickets">All Tickets</option>
+            <option value="All Tickets">Closed Tickets</option>
+            <option value="All Tickets">Open Tickets</option>
+            <option value="All Tickets">Assigned Tickets</option>
+          </select>
+        </div>
+        &nbsp;&nbsp; -->
+        <%# end %>
+        <div class="col-md-8" style="position:relative;top:-11px;">
+          Displaying 
+          <%= form_tag('/devices/tickets', :id=>'form_ticket_rows', :style => 'display:inline-block;') do -%>
+            <div class="dropdown dropdown-dark" style="width:70px;top:12px;">
+              <select name="two" class="dropdown-select small" id="select_ticket_rows">
+                <% [5,10,20,50].each do |n| %>
+                  <% if @rows.to_i == n %>
+                    <option value="<%=n%>" selected="selected"><%=n%></option>
+                  <% else %>
+                    <option value="<%=n%>"><%= n%></option>
+                  <% end %>
+                <% end %>
+              </select>
+            </div>
+            <%= hidden_field_tag "ticket_rows" %>&nbsp;&nbsp;
+            per page
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-md-3" style="display:inline-block;margin-top:3px;">
+        <%= will_paginate @tickets, :previous_label => '<', :next_label => '>' %>
+        <%#= sal %>
+      </div>      
+
+    </div>
+    
+    <div class="filter-div" style="display:none">
+      <%= render 'filter' %>
+    </div>
+
+    <!-- <table class="listing" id="table_tickets" style="margin-top:20px;min-width:930px;"> -->
+    <table class="listing" id="table_tickets" style="margin-top:20px;">
+      <thead>
+        <tr>
+          <th>&nbsp;&nbsp;</th>
+          <!-- <th>User&nbsp;&nbsp;</th> -->
+          <th>Ticket #&nbsp;&nbsp;</th>
+          <th>Group&nbsp;&nbsp;</th>
+          <th>Subject&nbsp;&nbsp;</th>
+          <th>Owner&nbsp;&nbsp;</th>
+          <th style="text-align:center;">Last replied&nbsp;&nbsp;</th>
+          <th>Device&nbsp;&nbsp;</th>
+          <th>Updated&nbsp;&nbsp;</th>
+          <!-- <th>Modify</th>
+          <th>Delete</th> -->
+        </tr>
+      </thead>
+
+      <tbody>
+        <% if @tickets.blank? %>
+          <tr>
+            <td></td>
+            <td colspan="8">No Tickets</td>
+          </tr>
+        <% else %>
+          <% @tickets.each do |ticket| %>
+            <tr class="tr-dropdown-ticket">
+              <td>
+                <span>
+                  <!-- &#9658; -->
+                  <i class="fa fa-fw fa-angle-right" style="font-size:18px;"></i>
+                </span>
+                <%= ticket.user_id %>
+              </td><!-- &#9660;down -->
+              <!-- <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> -->
+              <td>#&nbsp;<%= ticket.id%></td>
+              <td><%= processblank(ticket.ticket_group) %></td>
+              <td>
+                <%= processblank(ticket.subject) %>
+              </td>
+              <td>
+                <% if ticket.is_read %>
+                  <span id="span_mail_<%=ticket.id%>_2" style="color:yellow;"><%= ticket.owner.downcase %></td></span>
+                <% else %>
+                  <%= ticket.owner.downcase %></td>
+                <% end %>
+              <td>
+                <%= form_tag('/tickets', method: :post, :id=>'form_check_comment', :style => 'display:inline-flex;') do -%>
+                  <% if Comment.where(:ticket_id=>ticket.id).last.nil? %>
+                    <%= " --- " %>
+                  <% else %>
+                    <% if ticket.is_read %>
+                      <span id="span_mail_<%=ticket.id%>" style="color:yellow;"><%= is_superuser(Comment.where(:ticket_id=>ticket.id).last.ticket_owner).split('@').first %></span>
+                      &nbsp;
+                      <i class="glyphicon glyphicon-envelope" id="icon_mail_<%=ticket.id%>" style="color:yellow;"></i>
+                    <% else %> 
+                      <%= is_superuser(Comment.where(:ticket_id=>ticket.id).last.ticket_owner).split('@').first %>
+                      &nbsp;
+                      <i class="glyphicon glyphicon-envelope"></i>
+                    <% end %>
+                  <% end %>
+                  <%#= hidden_field 'ticket_id', :value=>ticket.id %> 
+                <% end -%>
+              </td>
+              <td><%= processblank(ticket.device) %></td>
+              <td><%= time_ago_in_words(ticket.updated_at)%> ago</td>
+              <!-- <td><%#= link_to 'Show', ticket %></td> -->
+              <!-- <td><%#= link_to 'Edit', edit_ticket_path(ticket), :class=>'btn btn-primary btn-reply btn-device' %></td> -->
+              <!-- <td><%#= link_to 'Destroy', ticket, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'btn btn-primary btn-reply btn-device' %></td> -->
+            </tr>
+
+            <tr id="comments_<%=ticket.id%>" style="display:none;">
+              <td style="border:none" colspan="9">
+                <div style="content-div">
+                  <div>
+                    <div class="col-md-2">
+                      <span><%= current_user.username %></span>
+                    </div>
+                    <%= form_tag('/tickets/add_comments', method: :post) do -%>
+                      <div class="col-md-9">
+                        <%= hidden_field_tag 'user_id', current_user.id %>
+                        <%= hidden_field_tag 'ticket_owner', current_user.username %>
+                        <%= hidden_field_tag 'ticket_id', ticket.id%>
+                        <%= hidden_field_tag 'ticket_name', ticket.subject %>
+                        <%= hidden_field_tag 'is_read', true %>
+                        <%= text_area_tag 'content', nil, rows:6, class:'form-control' %>
+                      </div>
+                      <div class="col-md-1" style="text-align:right">
+                        <%= submit_tag 'Reply', :class=>'btn btn-primary btn-reply btn-device' %>
+                      </div>
+                    <% end %>
+                    <br/><% up_ind = 0 %>
+                    <% @comments.each do |comment| %>
+                      <% if comment.ticket_id == ticket.id.to_s %>
+
+                        <div class="col-md-2 sub-comment" style="padding-top:10px;">
+                          <span>
+                            <%= comment.ticket_owner.split("@").first %>
+                          </span>
+                        </div>
+                        <div class="col-md-9 sub-comment" style="background-color:rgba(0, 67, 116, 0.37);padding:10px 16px;"><!-- #004374 -->
+                          <div class="triangle">
+                          </div>
+                          <%= comment.comment%><br/><br/>
+                          [Update <%= comments_by_ticketid(ticket.id)-up_ind %>]
+                          <% up_ind = up_ind + 1 %>
+                          <br/>
+                        </div>
+                        <div class="col-md-1 sub-comment" style="padding-left:0px;padding-right:0px;text-align:right">
+                          <%= time_ago_in_words(comment.updated_at) %> ago
+                        </div>
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    <br>
+  </div>
+</div>
+
+<script>
+  var headertext = [],
+  headers = document.querySelectorAll('#table_tickets th'),
+  tablerows = document.querySelectorAll('#table_tickets th'),
+  table_body = document.querySelector('#table_tickets tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 2, col; col = row.cells[j]; j++) {
+      if ( headertext[j] && ( i%2 == 0 ) )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( i%2 == 1 ) {
+        col.setAttribute('style', 'border:none;');  
+      }
+      col.setAttribute('style', 'text-align:left;');
+      // console.log(col);
+      // console.log(headertext[j]);
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+      // col.setAttribute('data-th', 'Detail');  
+    }
+
+  }
+</script>

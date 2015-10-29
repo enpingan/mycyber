@@ -1,0 +1,23 @@
+// Place all the styles related to the devices controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.btn-device {
+
+  /*background-color: #042F64;
+  border-color: #182938;*/
+
+  background: rgba(31, 104, 158, 0);
+  border-color: #1F689E #0a0a0a black;
+  color: white;
+  border-style: none;
+  height: 34px;
+  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
+
+  cursor: pointer;
+}

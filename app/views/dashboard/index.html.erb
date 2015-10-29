@@ -1,0 +1,117 @@
+<!-- <div class="container" style="min-width:1053px;"> -->
+<div class="container">
+  <div class="div-notice">
+    <%= notice %>
+    <% if @note_count.to_i == 0 && @dnote_count.to_i == 0 %>
+      <%= "You have no new notification." %>
+    <% else %>
+      <%= "You have unread notifications for events which may affect your services" %>
+    <% end %>
+    <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+      <li>
+        <% if @dnote_count.to_i != 0 || @note_count.to_i != 0 %>
+          <% if @dnote_count.to_i != 0 %>
+            <span class="span-note" note="devices" style="text-decoration:underline;cursor:pointer;">
+          <% else %>
+            <span class="span-note" note="tickets" style="text-decoration:underline;cursor:pointer;">
+          <% end %>
+            <%= @note_count.to_i + @dnote_count.to_i %> Notifications
+          </span>
+        <% end %>
+      </li>
+      <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+    </ul>
+  </div>
+
+  <div class="content-div col-md-12">
+    <h1><i class="fa fa-fw fa-cogs"></i>&nbsp;&nbsp;Devices List</h1>
+    <div class="content-div">
+      <h3>Recent Devices</h3>
+      <div id="ticket">
+        <%= render 'ticket' %>
+      </div>
+    </div>
+  </div>
+
+	<div class="content-div col-md-12" style="margin-bottom:80px">
+		<h1><i class="fa fa-fw fa-tag"></i>&nbsp;Tickets List</h1>
+    <div class="content-div">
+      <h3>
+        Recent Tickets
+      </h3>
+      <div id="device">
+        <%= render 'device' %>
+      </div>
+    </div>
+	</div>
+
+</div>
+
+<script>
+  $(function() {
+    $('.pagination a').attr('data-remote', 'true');
+  });
+
+  var headertext = [],
+  headers = document.querySelectorAll('#admin_table_tickets th'),
+  tablerows = document.querySelectorAll('#admin_table_tickets th'),
+  table_body = document.querySelector('#admin_table_tickets tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 0, col; col = row.cells[j]; j++) {
+      if ( headertext[j] )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( i%2 == 1 ) {
+        col.setAttribute('style', 'border:none;');  
+      }
+      col.setAttribute('style', 'text-align:left;');
+      // console.log(col);
+      // console.log(headertext[j]);
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+      // col.setAttribute('data-th', 'Detail');  
+    }
+
+  }
+
+  headers = document.querySelectorAll('#admin_table_devices th'),
+  tablerows = document.querySelectorAll('#admin_table_devices th'),
+  table_body = document.querySelector('#admin_table_devices tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 2, col; col = row.cells[j]; j++) {
+      if ( headertext[j] )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( i%2 == 1 ) {
+        col.setAttribute('style', 'border:none;');  
+      }
+      col.setAttribute('style', 'text-align:left;');
+      // console.log(col);
+      // console.log(headertext[j]);
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+      // col.setAttribute('data-th', 'Detail');  
+    }
+
+  }
+</script>

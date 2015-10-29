@@ -1,0 +1,65 @@
+<div class="container" style="min-width:1053px;">
+  <div class="div-notice" style="min-width:1024px;">
+    <%= notice %>
+    <% if @note_count == 0 %>
+      <%= "You have no new notification." %>
+    <% else %>
+      <%= "You have unread notifications for events which may affect your services" %>
+    <% end %>
+    <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+      
+      <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+    </ul>
+  </div>
+
+  <div class="content-div" style="margin-bottom:9%;overflow:hidden;">
+    <h1>
+      Device usage
+      <% if hp_device(current_user.email) %>
+        <%#= link_to 'New Device', new_device_path, :class=>'btn btn-primary btn-device' %>
+      <% end %>
+    </h1>
+    <div style="text-align:right;">
+      <%= link_to 'View All Devices', devices_path, :class=>'btn btn-primary btn-device', :style=>'right:0px;margin-top:-80px;' %>    
+    </div>
+    
+    <div class="col-md-12 content-div">
+      <table id="table_usage">
+        <tbody>
+          <tr style="text-align:center;">
+            <td colspan="6"><h4>Recent 5 days</h4></td>
+          </tr>
+          <% n = @ulogs.count %>
+          <% @ulogs.each do |u| %>
+            <tr style="height:<%= 300 / @ulogs.count.to_i %>px">
+              <td style="width:25px;">
+                <%= n - 1 %>
+              </td>
+              <td>
+                <%#= get_dnotes((Time.now - 4.days).to_date, @dname) != n ? raw('<i class="fa fa-fw fa-circle" style="color:transparent;"></i>') : raw('<i class="fa fa-fw fa-circle"></i>') %>
+                <%= get_dnotes((Time.now - 4.days).to_date, @dname) > 0 ? get_dnotes((Time.now - 4.days).to_date, @dname) != n ? raw('<i class="fa fa-fw fa-circle" style="color:transparent;"></i>') : raw('<i class="fa fa-fw fa-circle"></i>') : n - 1 == 0 ? raw('<i class="fa fa-fw fa-circle"></i>') : raw('') %>
+              </td>
+              <td>
+                <%= get_dnotes((Time.now - 3.days).to_date, @dname) > 0 ? get_dnotes((Time.now - 3.days).to_date, @dname) != n ? raw('<i class="fa fa-fw fa-circle" style="color:transparent;"></i>') : raw('<i class="fa fa-fw fa-circle"></i>') : n - 1 == 0 ? raw('<i class="fa fa-fw fa-circle"></i>') : raw('') %>
+              </td>
+              <td>
+                <%= get_dnotes((Time.now - 2.days).to_date, @dname) > 0 ? get_dnotes((Time.now - 2.days).to_date, @dname) != n ? raw('<i class="fa fa-fw fa-circle" style="color:transparent;"></i>') : raw('<i class="fa fa-fw fa-circle"></i>') : n - 1 == 0 ? raw('<i class="fa fa-fw fa-circle"></i>') : raw('') %>
+              </td>
+              <td>
+                <%= get_dnotes((Time.now - 1.day).to_date, @dname) > 0 ? get_dnotes((Time.now - 1.day).to_date, @dname) != n ? raw('<i class="fa fa-fw fa-circle" style="color:transparent;"></i>') : raw('<i class="fa fa-fw fa-circle"></i>') : n - 1 == 0 ? raw('<i class="fa fa-fw fa-circle"></i>') : raw('') %>
+              </td>
+              <td>
+                <%= get_dnotes(Time.now.to_date, @dname) > 0 ? get_dnotes(Time.now.to_date, @dname) != n ? raw('<i class="fa fa-fw fa-circle" style="color:transparent;"></i>') : raw('<i class="fa fa-fw fa-circle"></i>') : n - 1 == 0 ? raw('<i class="fa fa-fw fa-circle"></i>') : raw('') %>
+              </td>
+            </tr>
+            <% n = n - 1 %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('table#table_usage tbody tr td').css('top', $('table#table_usage tbody tr td').height() );
+</script>

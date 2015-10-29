@@ -1,0 +1,19 @@
+<div class="container" style="margin-top:240px;">
+  <div class="radius-div" style="text-align:center;margin:0 0;padding:20px 0;">
+    <%= image_tag('txtlogo.png') %>
+  </div>
+  <div class="content-div col-md-12" style="text-align:center;margin-top:0px;background-color:rgba(123, 122, 122, 0.35)">
+    <h1 style="color:yellow;">Sorry, Server Problem Found</h1>
+    <div class="content-div">
+      <h3>
+        You can back to the first page.<br/><br/>
+        Please leave your problem by ticket.
+      </h3>
+      <br/>
+      <%= link_to('/', :class=>'btn btn-primary btn-device', :style=>'color:black') do %>
+        <i class="fa fa-fw fa-arrow-circle-left"></i>&nbsp;Back
+      <% end %>
+    </div>
+  </div>
+
+</div>

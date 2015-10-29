@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h2><u>Dear Customer</u></h2>
+    <h3>
+      A comment has been created successfully.
+    </h3>
+    <p>
+      &nbsp;&nbsp;Ticket Subject : <%=@comment_info.ticket_name %><br/>
+      &nbsp;&nbsp;Sender Email : <%=@comment_info.user_email%><br/><br/>
+    </p>
+    <h3>
+      View the status of your ticket at any time on the Customer Portal:
+      <br>
+      URL : <a href="https://my.cyberadvance.com/tickets/<%=@comment_info.user_id%>">https://my.cyberadvance.com/tickets/<%=@comment_info.user_id%></a><br/>
+      <br/>
+      Comment : <%= @comment_info.content %>
+      <br/>
+      If you have received this email in error, or you are concerned about suspicious activity concerning your account, please contact support@cyberadvance.com.<br/>Thank you,
+      <br/><br/><br/>
+      CyberAdvance Technologies
+      <br/><br/>
+      <a href="https://www.cyberadvance.com">www.cyberadvance.com</a>
+    </h3>
+
+  </body>
+</html>

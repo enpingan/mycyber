@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="div-notice">
+    <%= notice %>
+    <% if @note_count == 0 %>
+      <%= "You have no new notification." %>
+    <% else %>
+      <%= "You have unread notifications for events which may affect your services" %>
+    <% end %>
+    <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+      <% if @note_count != 0 %>
+        <li><span class="span-note" style="text-decoration:underline;cursor:pointer;"><%= @note_count%> Notifications</span></li>
+      <% end %>
+      <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+    </ul>
+  </div>
+</div>
+
+<div class="border-form-div">
+  <!-- <p id="notice"><%= notice %></p>
+   -->
+  <p>
+    <strong>Group:</strong>
+    <%= @ticket.ticket_group %>
+  </p>
+
+  <p>
+    <strong>Subject:</strong>
+    <%= @ticket.subject %>
+  </p>
+
+  <p>
+    <strong>Owner:</strong>
+    <%= @ticket.owner %>
+  </p>
+
+  <p>
+    <strong>Last replied:</strong>
+    <%= @ticket.last_replied %>
+  </p>
+
+  <p>
+    <strong>Device:</strong>
+    <%= @ticket.device %>
+  </p>
+
+  <p>
+    <strong>Updated:</strong>
+    <%= @ticket.updated %>
+  </p>
+
+  <%= link_to 'Edit', edit_ticket_path(@ticket), :class=>'btn btn-primary' %>
+  <%= link_to 'Back', tickets_path, :class=>'btn btn-primary' %>
+</div>

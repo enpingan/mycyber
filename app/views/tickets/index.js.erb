@@ -1,0 +1,13 @@
+
+<% if !params[:content].nil? %>
+  <% ct = Ticket.find_by_id(params[:ticket_id]) %>
+
+  jQuery('textarea[data-id=<%=params[:ticket_id]%>]').val('');
+  jQuery('textarea[data-id=<%=params[:ticket_id]%>]').focus();
+  jQuery('#add_comment_<%=params[:ticket_id]%>').html("<%= j(render :partial=>'add_comment', :locals=>{:ticket=>ct}) %>");
+<% else %>
+  jQuery('#tickets').html("<%= j(render 'tickets/tickets') %>");
+<% end %>
+
+$('.pagination a').attr('data-remote', 'true');
+$('#select_ticket_rows').attr('data-remote', 'true');

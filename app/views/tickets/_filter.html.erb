@@ -1,0 +1,39 @@
+<%#= form_tag('/tickets/filter', :style=>"margin-top:25px;", :class=>'col-md-12') do -%>
+<%= simple_form_for :search, :method=>'get', :html=>{:style=>'margin-top:25px', :class=>'col-md-12'}, :remote=>true do |f| %>
+  <div class="col-md-6">
+    <div class="field">
+      <i class="fa fa-fw fa-users" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'group', nil, class: 'form-control', placeholder: 'Group', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:group] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-paperclip" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'subject', nil, class: 'form-control', placeholder: 'Subject / Title', :style=>'margin-top:-18px;padding-left:40px;' , :value=>!@filter_params.blank? ? @filter_params[:subject] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-user" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'owner', nil, class: 'form-control', placeholder: 'Owner', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:owner] : nil %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="field">
+      <i class="fa fa-fw fa-reply" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'last_replied', nil, class: 'form-control', placeholder: 'Last replied', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:last_replied] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-cog" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'device', nil, class: 'form-control', placeholder: 'Device', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:device] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-calendar" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'updated', nil, class: 'form-control', placeholder: 'Updated', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:updated] : nil %>
+    </div>
+    <div style="text-align:right;margin-right:25px;margin-bottom:25px;">
+      <%= button_tag(type: "submit", :class=>'btn btn-primary btn-device') do %>
+        <i class="glyphicon glyphicon-filter" style="position:relative;top:2px;"></i>&nbsp;&nbsp;Filter
+      <% end %>
+      <%= button_tag(:class=>'btn btn-primary btn-device', :id=>'btn_cancel_ticket_filter') do %>
+        <i class="glyphicon glyphicon-remove-sign" style="position:relative;top:2px;"></i>&nbsp;&nbsp;Close
+      <% end %>
+    </div>
+  </div>
+<% end -%>

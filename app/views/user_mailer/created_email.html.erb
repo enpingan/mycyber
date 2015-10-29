@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+  </head>
+  <body>
+    <h2><u>Dear Customer</u></h2>
+    <h3>
+      A ticket has been created successfully.
+    </h3>
+    <p>
+      &nbsp;&nbsp;Ticket Subject : <%=@created_info.subject %><br/>
+      &nbsp;&nbsp;Account Email : <%=@user_info.email%><br/><br/>
+    </p>
+    <h3>
+      View the status of your ticket at any time on the Customer Portal:
+      <br>
+      URL : <a href="https://my.cyberadvance.com/tickets/<%=@created_info.id%>">https://my.cyberadvance.com/tickets/<%=@created_info.id%></a><br/>
+      <br/>
+      <br/>
+      If you have received this email in error, or you are concerned about suspicious activity concerning your account, please contact support@cyberadvance.com.<br/>Thank you,
+      <br/><br/><br/>
+      CyberAdvance Technologies
+      <br/><br/>
+      <a href="https://www.cyberadvance.com">www.cyberadvance.com</a>
+    </h3>
+
+  </body>
+</html>

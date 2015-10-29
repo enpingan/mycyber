@@ -1,0 +1,36 @@
+<%#= form_tag('/devices/filter', method: :post, :style=>'margin-top:25px;', :class=>'col-md-12') do -%>
+<%= simple_form_for :search, :method=>'get', :html=>{:style=>'margin-top:25px', :class=>'col-md-12'}, :remote=>true do |f| %>
+  <div class="col-md-6">
+    <div class="field">
+      <i class="fa fa-fw fa-font" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'name', nil, class: 'form-control', placeholder: 'Device Name', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:name] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-globe" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'location', nil, class: 'form-control', placeholder: 'Location', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:location] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-laptop" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'device_type', nil, class: 'form-control', placeholder: 'Device Type', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:device_type] : nil %>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="field">
+      <i class="fa fa-fw fa-info-circle" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'public_ip', nil, class: 'form-control', placeholder: 'Public IP', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:public_ip] : nil %>
+    </div>
+    <div class="field">
+      <i class="fa fa-fw fa-info-circle" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:8px;"></i>
+      <%= text_field_tag 'private_ip', nil, class: 'form-control', placeholder: 'Private IP', :style=>'margin-top:-18px;padding-left:40px;', :value=>!@filter_params.blank? ? @filter_params[:private_ip] : nil %>
+    </div>
+    <div class="col-md-12" style="text-align:right;margin-bottom:25px;">
+      <%= button_tag(type: "submit", :class=>'btn btn-primary btn-device') do %>
+        <i class="glyphicon glyphicon-filter"></i>&nbsp;&nbsp;Filter
+      <% end %>
+      <%= button_tag(:class=>'btn btn-primary btn-device', :id=>'btn_cancel_device_filter') do %>
+        <i class="glyphicon glyphicon-remove-sign"></i>&nbsp;&nbsp;Close
+      <% end %>
+    </div>
+  </div>
+  
+<% end -%>

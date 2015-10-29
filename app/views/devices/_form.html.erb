@@ -1,0 +1,41 @@
+<div class="border-form-div">
+  <%= form_for(@device) do |f| %>
+    <% if @device.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(@device.errors.count, "error") %> prohibited this device from being saved:</h2>
+
+        <ul>
+        <% @device.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%#= f.hidden_field :id, :value=> 100000 + rand(999999-100000) %>
+    <div class="field">
+      <%= f.label :name %><br>
+      <%= f.text_field :name, :class=>'form-control' %>
+    </div>
+    <div class="field">
+      <%= f.label :device_type %><br>
+      <%= f.text_field :device_type, :class=>'form-control' %>
+    </div>
+    <div class="field">
+      <%= f.label :location %><br>
+      <%= f.text_field :location, :class=>'form-control' %>
+    </div>
+    <div class="field">
+      <%= f.label :public_ip %><br>
+      <%= f.text_field :public_ip, :class=>'form-control' %>
+    </div>
+    <div class="field">
+      <%= f.label :private_ip %><br>
+      <%= f.text_field :private_ip, :class=>'form-control' %>
+    </div>
+    <div class="actions">
+      <%= f.submit :class=>'btn btn-primary' %>
+      <%= link_to 'Back', devices_path, :class=>'btn btn-primary'  %>
+    </div>
+  <% end %>
+</div>

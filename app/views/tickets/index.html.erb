@@ -1,0 +1,45 @@
+<!-- <div class="container" style="min-width:1053px;"> -->
+<div class="container">
+  <!-- <div class="div-notice" style="min-width:1024px;"> -->
+  <div class="div-notice">
+    <%= notice %>
+    <% if @note_count.to_i == 0 && @dnote_count.to_i == 0 %>
+      <%= "You have no new notification." %>
+    <% else %>
+      <%= "You have unread notifications for events which may affect your services" %>
+    <% end %>
+    <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+      <li>
+        <% if @dnote_count.to_i != 0 || @note_count.to_i != 0 %>
+          <% if @dnote_count.to_i != 0 %>
+            <span class="span-note" note="devices" style="text-decoration:underline;cursor:pointer;">
+          <% else %>
+            <span class="span-note" note="tickets" style="text-decoration:underline;cursor:pointer;">
+          <% end %>
+            <%= @note_count.to_i + @dnote_count.to_i %> Notifications
+          </span>
+        <% end %>
+      </li>
+      <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+    </ul>
+  </div>
+
+  <!-- <div class="content-div" style="margin-bottom:9%;min-width:1024px;"> -->
+  <div class="content-div" style="margin-bottom:9%;">
+    <h1>
+      <% if hp_ticket(current_user.username) %>
+        <%= link_to(new_ticket_path, :class=>'link-plus', :style=>'margin-top:-8px;text-decoration:none;') do %>
+          &nbsp;<i class="glyphicon glyphicon-tags" style="font-size:24px;color:yellow;"></i>
+          <i class="glyphicon glyphicon-plus" style="font-size:10px;margin-left:-8px;"></i>
+        <% end %>
+      <% end %>
+      Tickets
+    </h1>
+    <!-- <div style="padding: 10px 0;min-width:930px;"> -->
+    <div id="tickets">
+      <%= render 'tickets/tickets' %>
+    </div>
+    <br>
+  </div>
+</div>
+

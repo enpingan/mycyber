@@ -1,0 +1,106 @@
+<%#= form_for('/tickets/quickadd', method: :post, :id =>"form_ticket_quickadd", url: {action: "quickadd"}) do |f| -%>
+<%= simple_form_for :quickadd, :method=>'get', :remote=>true do |f| %>
+  <div class="col-md-12">
+    <div class="col-md-6" style="margin: 15px 0;">
+      <label><span style="color:red">*</span>&nbsp;Title:</label><br/>
+      <%= f.text_field :group, :class=>'form-control',:required => true %>
+    </div>
+
+    <div class="col-md-3" style="margin:15px 0;">
+      <label><span style="color:red">*</span>&nbsp;Subject:</label><br/>
+      <%#= f.select :subject, options_for_select([ "Subject1", "Subject2", "Subject3", "Subject4" ], "Subject1"), :style=>'width:100%;font-size:72px;' %>
+      <div class="dropdown dropdown-dark">
+        <select name="two" class="dropdown-select" id="_qselect_ticket_subject">
+          <option value="">Select</option>
+
+          <option value="API Question">API Question</option>
+          <option value="Accounting Request">Accounting Request</option>
+          <option value="CDNLayer Question">CDNLayer Question</option>
+          <option value="Colocation Service Request">Colocation Service Request</option>
+          <option value="DNS Request">DNS Request</option>
+          <option value="DOS/Abuse Issue">DOS/Abuse Issue</option>
+          <option value="Hardware Firewall Question">Hardware Firewall Question</option>
+          <option value="Hardware Issue">Hardware Issue</option>
+          <option value="Hardware Load Balancer Question">Hardware Load Balancer Question</option>
+          <option value="Licensing Question">Licensing Question</option>
+          <option value="Mail Server Issue">Mail Server Issue</option>
+          <option value="OS Reload Question">OS Reload Question</option>
+          <option value="Portal Information Question">Portal Information Question</option>
+          <option value="Private Network Question">Private Network Question</option>
+          <option value="Public Network Question">Public Network Question</option>
+          <option value="Reboots and Console Access">Reboots and Console Access</option>
+          <option value="Sales Request">Sales Request</option>
+          <option value="Security Issue">Security Issue</option>
+          <option value="Storage Question">Storage Question</option>
+          <option value="Transcoding Question">Transcoding Question</option>
+          <option value="Vyatta Question">Vyatta Question</option>
+          <option value="Other: Administrative">Other: Administrative</option>
+
+        </select>
+      </div>
+      <%= f.hidden_field :subject,:required => true %>
+    </div>
+
+    <div class="col-md-3" style="margin:15px 0;">
+      <label><span style="color:red">*</span>&nbsp;Assign To:</label><br/>
+      <%#= f.select :owner, options_for_select(@emails),:style=>'width:100%;font-size:72px;' %>
+      <div class="dropdown dropdown-dark">
+        <select name="two" class="dropdown-select" id="_qselect_ticket_last_replied">
+          <option value="">Select</option>
+          <%# @emails.each do |e| %>
+            <!-- <option value="<%#= e%>"><%#= e%></option> -->
+          <%# end %>
+          <option value="<%= current_user.username %>"><%= current_user.username %></option>
+        </select>
+      </div>
+      <%#= f.hidden_field :last_replied, :required => true%>
+      <%= f.hidden_field :owner, :required => true %>
+    </div>
+
+    <div class="col-md-9" style="margin: 15px 0;">
+      <label><span style="color:red">*</span>&nbsp;Detail:</label><br/>
+      <%= f.text_area :updated, :class=>"form-control", :rows=>'4', :required => true%>
+      <%#= f.text_field :updated, :class=>'form-control', :value=>Time.now, :readonly => true %>
+    </div>
+
+    <div class="col-md-3" style="margin: 15px 0;">
+      <label><span style="color:red">*</span>&nbsp;Device:</label><br/>
+      <div class="dropdown dropdown-dark" id="">
+        <select name="two" class="dropdown-select"  id="_qselect_ticket_device">
+          <option value="">Select</option>
+          <%# @devices.each do |d| %>
+            <!-- <option value="<%#=d.name%>"><%#= d.name%></option> -->
+          <%# end %>
+          <% if !get_devices(current_user.username).nil? && !get_devices(current_user.username).blank? %>
+            <% get_devices(current_user.username).each do |d| %>
+            <option value="<%= d.name %>"><%= d.name %></option>
+            <% end %>
+          <% end %>
+        </select>
+      </div>
+      <%= f.hidden_field :device, :required => true %>
+      <%#= f.text_field :device, :class=>'form-control' %>
+
+      <label><span style="color:red">*</span>&nbsp;Email Address:</label><br/>
+      <div class="dropdown dropdown-dark">
+        <select name="two" class="dropdown-select" id="_qselect_ticket_owner">
+          <option value="">Select</option>
+          <option value="<%=current_user.email%>"><%= current_user.email%></option>            
+        </select>
+      </div>
+      <%#= f.hidden_field :owner, :required => true %>
+      <%= f.hidden_field :last_replied, :class=>'form-control' %>
+    </div>
+    <%= f.hidden_field :user_id, :value=>current_user.id %>
+    <%= f.hidden_field :is_read, :value=>"1" %>
+    <%#= f.hidden_field :is_read, :value=>current_user.id %>
+    <div class="action" style="text-align:right;margin-right:25px">
+      <%= button_tag(type: "submit", :class=>'btn btn-primary btn-device') do %>
+        <i class="glyphicon glyphicon-plus-sign" style="position:relative;top:2px;"></i>&nbsp;&nbsp;Quick Add
+      <% end %>
+      <%= button_tag(:class=>'btn btn-primary btn-device', :id=>'btn_ticket_quickadd_close') do %>
+        <i class="glyphicon glyphicon-remove-sign" style="font-size:14px;position:relative;top:2px;"></i>&nbsp;&nbsp;Close
+      <% end %>
+    </div>
+  </div>
+<% end -%>

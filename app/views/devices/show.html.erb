@@ -1,0 +1,172 @@
+<div class="container">
+  <div id="show_notice">
+    <%= render 'show_notice' %>
+  </div>
+
+  <div class="content-div" style="overflow:hidden;margin-bottom:9%">
+    <h1 style="display:inline-block">Device Details</h1>
+    <div style="text-align:right;">
+      <%= link_to 'View All Devices', devices_path, :class=>'btn btn-primary btn-device', :style=>'right:0px;margin-top:-80px;' %>    
+    </div>
+    <div style="border:8px solid rgba(99, 154, 195, 0.36);overflow:hidden;margin:15px 0;">
+
+      <div class="col-lg-2" style="text-align:left;padding-top:15px;">
+        <%= image_tag('server1.png', size: "120") %>
+      </div>
+      <div class="col-lg-7">
+        <h3><i class="fa fa-fw fa-cog"></i>&nbsp;<%= @device.name %></h3><br/>
+        <i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Public IP:&nbsp;&nbsp;<%= @device.public_ip %><br/><br/>
+        <i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Private IP:&nbsp;&nbsp;<%= @device.private_ip %><br/><br/>
+      </div>
+
+      <div class="col-lg-3" style="text-align:right">
+        <div class="dropdown dropdown-dark" style="width:150px;top:12px;" id="select_device_action">
+          <select name="two" class="dropdown-select small">
+            <option value="">Action</option>
+            <option value="Reboot">Reboot</option>
+            <option value="Power On / Off">Power On / Off</option>
+            <option value="Rescue">Rescue</option>
+            <option value="OS Reload">OS Reload</option>
+            <option value="Load From Image">Load From Image</option>
+            <!-- <option value="Create Image Template">Create Image Template</option> -->
+            <option value="Create Flex Image">Create Flex Image</option>
+            <!-- <option value="Migrate to Local Disk">Migrate to Local Disk</option> -->
+            <option value="Rename Instance">Rename Instance</option>
+            <option value="Port Control">Port Control</option>
+            <option value="View Audit Logs">View Audit Logs</option>
+            <option value="KVM Console">KVM Console</option>
+            <option value="Cancel Device">Cancel Device</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <%#= form_tag('/devices/saction', method: :post, :id=>'form_send_actions', :style=>'display:none') do -%>
+    <%= simple_form_for @device, :method=>'get', :remote=>true, :html=>{:id=>'form_send_actions'} do |f| %>
+      <%= hidden_field_tag "device_id", nil, :value=>@device.id %>
+      <%= hidden_field_tag "device_name", nil, :value=>@device.name %>
+      <%= hidden_field_tag "device_status", nil, :value=>@device.general_status %>
+      <%= hidden_field_tag "is_checked", nil, :value=>false %>
+      <%= hidden_field_tag "request_order" %>
+    <% end -%>
+
+    <div style="border:8px solid rgba(99, 154, 195, 0.36);overflow:hidden;margin:15px 0;">
+      <div class="col-lg-6" >
+        <h3><i class="fa fa-fw fa-comments"></i>&nbsp;Note</h3><br/>
+        <%= @device.device_note %> <br/><br/>
+        <%=%>
+      </div>
+      <div class="col-lg-6" >
+        <!-- <div class="col-lg-12"> -->
+          <h3><i class="fa fa-fw fa-folder"></i>&nbsp;Addons</h3><br/>
+        <!-- </div> -->
+
+        <!-- <div class="col-lg-12"> -->
+          <%= @device.addons %><br/><br/>
+        <!-- </div> -->
+      </div>
+    </div>
+
+    <div style="border:8px solid rgba(99, 154, 195, 0.36);overflow:hidden;margin:15px 0;">
+      <div class="col-lg-12">
+        <h3><i class="fa fa-fw fa-paperclip"></i>&nbsp;Gerneral</h3><br/>
+      </div>
+
+      <div class="col-lg-6">
+        <i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Status: <%= @device.general_status == "Active" ? raw('<i class="fa fa-fw fa-check-circle"></i>&nbsp;') + @device.general_status : raw('<i class="fa fa-fw fa-ban"></i>&nbsp;') + @device.general_status %><br/><br/>
+        <i class="fa fa-fw fa-calendar"></i>&nbsp;Start Date: <%=@device.created_at%><br/><br/>
+        <i class="fa fa-fw fa-refresh"></i>&nbsp;Reloaded: <%= @device.general_reloaded == "Reloaded" ? raw('<i class="fa fa-fw fa-check"></i>&nbsp;') + @device.general_reloaded : raw('<i class="fa fa-fw fa-ban"></i>&nbsp;') + @device.general_reloaded %><br/><br/>
+        <%=%>
+      </div>
+      <div class="col-lg-6">
+        <i class="fa fa-fw fa-globe"></i>&nbsp;Location: &nbsp;<%= raw(getflag_floc(@device.location)) + ' ' + @device.location %><br/><br/>
+        <i class="fa fa-fw fa-bell"></i>&nbsp;Last Trans: Transfer Monitoring Robot<br/><br/>
+        <%=%>
+      </div>
+    </div>
+
+    <div style="border:8px solid rgba(99, 154, 195, 0.36);overflow:hidden;margin:15px 0;">
+      <div class="col-lg-12">
+        <h3><i class="fa fa-fw fa-linux"></i>&nbsp;System</h3><br/>
+      </div>
+
+      <div class="col-lg-6">
+        <i class="fa fa-fw fa-windows"></i>&nbsp;OS: <%= @device.osname%><br/><br/>
+        <i class="fa fa-fw fa-hdd-o"></i>&nbsp;RAM: <%= @device.osram %><br/><br/>
+        <i class="fa fa-fw fa-apple"></i>&nbsp;Processor: <%= @device.osprocessor%><br/><br/>
+        <%=%>
+      </div>
+      <div class="col-lg-6" style="text-align:right">
+        <%= image_tag('os1.png', size: "273 87") %>
+      </div>
+    </div>
+
+    <div style="border:8px solid rgba(99, 154, 195, 0.36);overflow:hidden;margin:15px 0;">
+      <div class="col-lg-12">
+        <h3><i class="fa fa-fw fa-cloud-upload"></i>&nbsp;Network</h3><br/>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="col-lg-6">
+          <h4>Public: </h4>
+        </div>
+        <div class="col-lg-6" style="text-align:right">
+          <%= link_to 'Order IPs', devices_path, :class=>'btn btn-primary btn-device' %>
+          <br/>
+          <br/>
+        </div>
+        <div class="col-lg-12">
+          <h4>eth1</h4><br/>
+          Status: ACTIVE<br/><br/>
+          IP Address: 159.122.101.228<br/><br/>
+          Default Gateway: 159.122.101.225<br/><br/>
+          Subnet Mask: 255.255.255.240<br/><br/>
+          Speed: 1000 Mbps<br/><br/>
+          Max Speed: 1000 Mbps<br/><br/>
+          VLAN: <u>fra02.bcr01a.1160</u><br/><br/>
+          <%=%>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="col-lg-6">
+          <h4>Private: </h4>
+        </div>
+        <div class="col-lg-6" style="text-align:right">
+          <%= link_to 'Order IPs', devices_path, :class=>'btn btn-primary btn-device' %>
+          <br/>
+          <br/>
+        </div>
+        <div class="col-lg-12">
+          <h4>eth0</h4><br/>
+          Status: ACTIVE<br/><br/>
+          IP Address: 159.122.101.228<br/><br/>
+          Default Gateway: 159.122.101.225<br/><br/>
+          Subnet Mask: 255.255.255.240<br/><br/>
+          Speed: 1000 Mbps<br/><br/>
+          Max Speed: 1000 Mbps<br/><br/>
+          VLAN: <u>fra02.bcr01a.1160</u><br/><br/>
+          <%=%>
+        </div>
+      </div>
+    </div>
+
+    <div style="border:8px solid rgba(99, 154, 195, 0.36);overflow:hidden;margin:15px 0;">
+      <div class="col-lg-12">
+        <h3><i class="fa fa-fw fa-terminal"></i>&nbsp;Software</h3><br/>
+      </div>
+
+      <div class="col-lg-6">
+        CentOS6.0-64 Minimal for VSI<br/><br/>
+        cPanel cPanel for CloudLayer w/ RVSkin w/ SoftaculousStable<br/><br/>
+        Nimsoft Nimsoft Robot5.0<br/><br/>
+        <%=%>
+      </div>
+      <div class="col-lg-6" style="text-align:right">
+        <%= image_tag('soft1.png', size: "94x75") %>
+      </div>
+    </div>
+
+  </div>
+</div>
+  <%#= link_to 'Edit', edit_device_path(@device), :class=>'btn btn-primary' %>
+  <%#= link_to 'Back', devices_path, :class=>'btn btn-primary' %>

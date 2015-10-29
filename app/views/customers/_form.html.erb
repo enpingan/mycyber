@@ -1,0 +1,213 @@
+<div class="container edit_customer">
+  <div class="container">
+    <% if !notice.nil? || !notice.blank? %>
+      <div class="div-notice">
+        <%= notice %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="container">
+    <div class="content-div" style="overflow:hidden;margin-bottom:9%">  
+      <h2><i class="fa fa-fw fa-user" style="color:palegoldenrod;"></i>&nbsp;Edit Profile</h2>
+      <br/>
+      <%= form_tag('/customers/modify', :id=>'form_update_customer') do %>
+        <div class="content-div" style="overflow:hidden">
+          <div class="col-md-6" style="margin: 15px 0;">
+            <label><span style="color:yellow">*</span>&nbsp;Username:</label><br/>
+            <i class="fa fa-fw fa-user" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:7px;left:5px;"></i>
+            <%= text_field_tag "username", nil, :class=>'form-control',:required => true, :value=>@customer.username, :readonly=>true, :style=>'padding-left:35px;margin-top:-18px;' %>
+          </div>
+          <div class="col-md-6" style="margin: 15px 0;">
+            <label><span style="color:yellow">*</span>&nbsp;Password:</label><br/>
+            <i class="fa fa-fw fa-key" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>            
+            <%= text_field_tag "password", nil, :class=>'form-control',:required => true, :value=>@customer.password , :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;' %>
+          </div>
+        </div>
+
+        <div class="content-div" style="overflow:hidden">
+          <div class="col-md-6" style="margin: 15px 0;">
+            <label><span style="color:yellow">*</span>&nbsp;First Name:</label><br/>
+            <i class="fa fa-fw fa-font" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+            <%= text_field_tag "first_name", nil, :class=>'form-control vchart',:required => true, :value=>@customer.first_name, :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+            <br/>
+            <label><span style="color:yellow">*</span>&nbsp;Last Name:</label><br/>
+            <i class="fa fa-fw fa-bold" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+            <%= text_field_tag "last_name", nil, :class=>'form-control vchart',:required => true, :value=>@customer.last_name, :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+          </div>
+
+          <div class="col-md-6" style="margin: 15px 0;">
+            <label><span style="color:yellow">*</span>&nbsp;City:</label><br/>
+            <i class="fa fa-fw fa-building-o" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+            <%= text_field_tag "city", nil, :class=>'form-control vchart',:required => true, :value=>@customer.city , :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+            <br/>
+            <label><span style="color:yellow">*</span>&nbsp;State:</label><br/>
+            <i class="fa fa-fw fa-home" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+            <%= text_field_tag "state", nil, :class=>'form-control vchart',:required => true, :value=>@customer.state , :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+          </div>
+
+          <div class="col-md-6" style="margin: 15px 0;">
+            <label><span style="color:yellow">*</span>&nbsp;Mobile:</label><br/>
+            <i class="fa fa-fw fa-phone" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+            <%= text_field_tag "number", nil, :class=>'form-control tnumber',:required => true, :value=>@customer.number , :autocomplete=>:off, :minlength=>11, :maxlength=>11, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+            <br/>
+            <label><span style="color:yellow">*</span>&nbsp;Personal Email Address:</label><br/>
+            <i class="fa fa-fw fa-envelope" style="color:#5bc0de;font-size:14px;margin:-2px 0;position:relative;top:7px;left:5px;"></i>
+            <%= email_field_tag "pemail", nil, :class=>'form-control',:required => true, :value=>@customer.pemail , :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+          </div>
+
+          <div class="col-md-6" style="margin: 15px 0;">
+            <label><span style="color:yellow">*</span>&nbsp;Country:</label><br/>
+            <% if @customer.country.nil? %>
+              <i class="fa fa-fw fa-flag" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+            <% else %>
+              <span class="span_flag" style="position:relative;left:11px;top:8px;">
+                <%= raw(get_countryname(@customer.country)) %>
+              </span>
+            <% end %>
+              <%= text_field_tag "country", nil, :class=>'form-control vchart',:required => true, :value=>@customer.country , :autocomplete=>:off, :style=>'padding-left:35px;margin-top:-18px;', :readonly=>true %>
+            <br/>
+          </div>
+        </div>
+        
+        <% if @retry == "retry" %>
+          <div class="col-md-offset-4 col-md-4" id="div_ccustomer">
+        <% else %>
+          <div class="col-md-offset-4 col-md-4" id="div_ccustomer" style="display:none;">
+        <% end %>
+          <br/><br/>
+          <span style="display:list-item;list-style:none;text-align:center;">
+            <i class="fa fa-fw fa-exclamation-triangle" style="font-size:16px;color:palegoldenrod"></i>&nbsp;&nbsp;
+
+            <% if @retry == "retry" %>
+              Invalid username or password. <br/>Please try again.
+            <% else %>
+              <% if @retry == "np" %>
+                This customer has not permission to create customer info.&nbsp;&nbsp; Please try again by correct user.
+              <% else %>
+                Please confirm your password for updating.
+              <% end %>
+            <% end %>
+          </span><br/><br/>
+
+          <%#= form_tag('/verifieds/cadmin', method: :post, :id=>'cform_uid_verified') do -%>
+
+            <div class="field">
+              <label><span style="color:red">*</span>&nbsp;Username:</label><br/>
+              <div class="inner-addon left-addon">
+                <i class="fa fa-fw fa-user" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:7px;left:5px;"></i>
+                <%= text_field :ou, "hid", :class=>'form-control tform-control', :required=>true, :style=>'padding-left:35px;margin-top:-18px;', :autocomplete=>:off, :readonly=>true, :value=>@customer.username %>
+              </div>
+            </div>
+            <div class="field">
+              <label><span style="color:red">*</span>&nbsp;Password:</label><br/>
+              <div class="inner-addon left-addon">
+                <i class="fa fa-fw fa-key" style="color:#5bc0de;font-size:18px;margin:-2px 0;position:relative;top:9px;left:5px;"></i>
+                <%= password_field :op, "hid", :class=>'form-control tform-control', :required=>true, :style=>'padding-left:35px;margin-top:-18px;', :autocomplete=>:off %>
+              </div>
+            </div>
+            <br/>
+            <div class="field" style="text-align:center;">
+              <%= button_tag(type:"submit", class:'btn btn-primary btn-reply2 btn-device', :style=>'padding: 6px 8px;marign-left:-3px;position:relative;left:-3px;', :id=>'cbtn_uid_customer', remote: true) do %>
+                <i class="fa fa-fw fa-check-circle"></i> Confirm&nbsp;&nbsp;
+              <% end %> 
+            </div>
+          <%# end -%>
+        </div>
+      <% end %>
+      <div class="col-md-12" style="text-align:center;">
+        <br/><br/>
+        <%= label_tag(nil, :class=>'btn btn-primary btn-device', :id=>'btn_edit_profile') do %>
+          <i class="fa fa-fw fa-user"></i>&nbsp;&nbsp;Edit Profile
+        <% end %>
+        <%= link_to('/dashboard', :class=>'btn btn-primary btn-device') do %>
+          <i class="glyphicon glyphicon-hand-left"></i>&nbsp;&nbsp;Back
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<% if @retry == "retry" %>
+  <script>
+    $('thml, body').animate({scrollTop: $(document).height()}, 1000);
+    $('#op_hid').focus();
+  </script>
+<% end %>
+
+<script>
+
+  $('#btn_edit_profile').on('click', function(e) {
+    $('#div_ccustomer').css('display', 'block');
+  });
+
+  $('.edit_customer').keypress(function(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+    // console.log(code);
+    console.log(code);
+    if (code == 13) {
+      if ($('#div_ccustomer').css('display') == 'none')  {
+        $('#div_ccustomer').css('display', 'block');
+        $('thml, body').animate({scrollTop: $(document).height()}, 1000);
+        $('#op_hid').focus();
+        return false;
+      } else {
+        e.preventDefault();
+        if ($('#op_hid').val() == "")  {
+          $('thml, body').animate({scrollTop: $(document).height()}, 1000);
+          $('#op_hid').focus();
+        }
+        $('#form_update_customer').submit();
+      }
+    }
+  });
+
+  $('.form-control').keypress(function(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+    if (code == 13) {
+      if ($('#div_ccustomer').css('display') == 'none')  {
+        $('#div_ccustomer').css('display', 'block');
+        $('thml, body').animate({scrollTop: $(document).height()}, 1000);
+        $('#op_hid').focus();
+        return false;
+      } else {
+        e.preventDefault();
+        if ($('#op_hid').val() == "")  {
+          $('thml, body').animate({scrollTop: $(document).height()}, 1000);
+          $('#op_hid').focus();
+        }
+        
+        $('#form_update_customer').submit();
+      }
+    }
+  });
+
+  $('.tnumber').keypress(function(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+
+    if (code > 31 && code < 48 || code > 57 ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  $('.vchart').keypress(function(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+
+    if ((code > 64 && code < 91) || (code > 96 && code < 123)) {
+      return true;
+    }
+
+    return false;
+  });
+
+  $('.tnumber').on('change', function(e) {
+    var tmp = $(this).val();
+    var phone = tmp.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+    
+    $(this).val(phone);
+  });
+
+</script>

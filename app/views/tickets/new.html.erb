@@ -1,0 +1,23 @@
+
+<h1 style="text-align:center;color:white">New Ticket</h1>
+
+<div class="container">
+  <div class="div-notice">
+    <i class="glyphicon glyphicon-exclamation-sign" style="color:yellow"></i>&nbsp;Attention : All fields are required one.
+    <% if @note_count == 0 %>
+      <%= "You have no new notification." %>
+    <% else %>
+      <%= "You have unread notifications for events which may affect your services" %>
+    <% end %>
+    <ul class="nav navbar-nav navbar-right note-ul" style="margin-right:0px;">
+      <% if @note_count != 0 %>
+        <li><span class="span-note" style="text-decoration:underline;cursor:pointer;"><%= @note_count%> Notifications</span></li>
+      <% end %>
+      <li><span class="span-close" style="cursor:pointer;"><i class="glyphicon glyphicon-remove"></i></span></li>
+    </ul>
+  </div>
+</div>
+
+<%= render 'form' %>
+
+<%#= link_to 'Back', tickets_path %>

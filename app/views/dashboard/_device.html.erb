@@ -1,0 +1,91 @@
+
+<ul class="nav navbar-nav navbar-right" id="ticket_ul">
+  <li><%= will_paginate @tickets, :previous_label => '<', :next_label => '>' %></li>
+  <li><i class="glyphicon glyphicon-refresh" id="btn_refresh_device" style="cursor:pointer"></i></li>
+</ul>  
+<table class="listing" id="admin_table_tickets">
+  <thead>
+    <tr>
+      <th>Ticket #</th>
+      <th><i class="fa fa-fw fa-users"></i>&nbsp;Group</th>
+      <th><i class="fa fa-fw fa-ticket"></i>&nbsp;Subject</th>
+      <th><i class="fa fa-fw fa-user"></i>&nbsp;Owner</th>
+      <th><i class="fa fa-fw fa-envelope"></i>&nbsp;Last replied</th>
+      <th><i class="fa fa-fw fa-cog"></i>&nbsp;Device</th>
+      <th><i class="fa fa-fw fa-calendar"></i>&nbsp;Updated</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @tickets.blank? %>
+      <tr>
+        <td colspan="7">No Tickets</td>
+      </tr>
+    <% else %>
+      <% @tickets.each do |ticket| %>
+        <tr>
+          <td><%= processblank(ticket.id) %></td>
+          <td><%= processblank(ticket.ticket_group) %></td>
+          <td><%= processblank(ticket.subject) %></td>
+          <td><%= processblank(ticket.owner) %></td>
+          <td>
+            <%#= processblank(ticket.last_replied) %>
+            <% if Comment.where(:ticket_id=>ticket.id).last.nil? %>
+              <%= " --- " %>
+            <% else %>
+              <% if ticket.is_read %>
+                <i class="fa fa-fw fa-user" id="icon_mail_<%=ticket.id%>" style="color:yellow;position:relative;"></i>
+                <span id="span_mail_<%=ticket.id%>" style="color:yellow;"><%= is_superuser(Comment.where(:ticket_id=>ticket.id).last.ticket_owner).split('@').first %></span>
+              <% else %> 
+                <i class="fa fa-fw fa-user" style="position:relative;"></i>
+                <%= is_superuser(Comment.where(:ticket_id=>ticket.id).last.ticket_owner).split('@').first %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><%= processblank(ticket.device) %></td>
+          <td><%= processblank(ticket.updated_at.to_date) %></td>
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  $('#device .pagination a').on('click', function() {
+    $('#ticket .pagination').attr('updated', 'false');
+    $('#device .pagination').attr('updated', 'true');
+  });
+
+  var headertext = [],
+  headers = document.querySelectorAll('#admin_table_tickets th'),
+  tablerows = document.querySelectorAll('#admin_table_tickets th'),
+  table_body = document.querySelector('#admin_table_tickets tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+    // console.log(current.textContent);
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 0, col; col = row.cells[j]; j++) {
+      if ( headertext[j] )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( i%2 == 1 ) {
+        col.setAttribute('style', 'border:none;');  
+      }
+      col.setAttribute('style', 'text-align:left;');
+      // console.log(col);
+      // console.log(headertext[j]);
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+      col.setAttribute('data-th', 'Detail');  
+    }
+
+  }
+</script>

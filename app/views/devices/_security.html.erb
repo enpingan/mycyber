@@ -1,0 +1,204 @@
+<div class="content-div" style="margin-bottom:9%">
+  <h1>
+    Usage Logs <!-- <span id="span_security">- <%= @dname %></span> -->
+    <% if hp_device(current_user.email) %>
+      <%#= link_to 'New Device', new_device_path, :class=>'btn btn-primary btn-device' %>
+    <% end %>
+  </h1>
+  <div style="text-align:right;">
+    <%= link_to 'View All Devices', devices_path, :class=>'btn btn-primary btn-device', :style=>'right:0px;margin-top:-80px;' %>    
+  </div>
+
+  <!-- <div style="padding: 10px 0;min-width:930px;"> -->
+  <div style="padding: 10px 0;">
+    <div class="col-lg-6" style="display:inline-block;">
+      <div class="col-lg-4" style="margin-top:9px;">
+        <% if @dnotes.nil? || @dnotes.blank? %>
+          Viewing 0 to 0 of 0
+        <% else %>
+          Viewing 
+          <% if @page_number == 1 %> 
+            <%= 1 %>
+          <% else %>
+            <%= 1 + (@page_number.to_i - 1) * @rows.to_i %>
+          <% end %>
+          to 
+          <span id="span_dncount1">
+            <% if @rows.to_i*@page_number.to_i > @dnotes.count %>
+              <%= @dnotes.count %> 
+            <% else %>
+              <%= @rows.to_i*@page_number.to_i %> 
+            <% end %>
+          </span>
+          of <span id="span_dncount2"><%= @dnotes.count %></span>
+        <% end %>
+        &nbsp;&nbsp;
+      </div>
+      <div class="col-lg-8" style="position:relative;top:-11px;">
+        Displaying&nbsp;
+        <%#= form_tag('/devices/security', :id=>'form_security_rows', :style => 'display:inline-block;') do -%>
+        <%= simple_form_for :security_rows, :method=>'get', :remote=>true, :html=>{:id=>'form_security_rows', :style=>'display:inline-block;'} do |f| %>
+          <%= hidden_field_tag "device_name", nil, :value=>@dname %>
+          <div class="dropdown dropdown-dark" style="width:70px;top:12px;">
+            <select name="security_rows" class="dropdown-select small" id="select_security_rows">
+              <% [5,10,20,50].each do |n| %>
+                <% if @rows.to_i == n %>
+                  <option value="<%=n%>" selected="selected"><%=n%></option>
+                <% else %>
+                  <option value="<%=n%>"><%= n%></option>
+                <% end %>
+              <% end %>
+            </select>
+          </div>
+          <%#= hidden_field_tag "device_rows" %>&nbsp;
+          <%#= select_tag "combo_device_rows", options_for_select([ "5", "10", "20", "50" ], @rows) %>per page
+        <% end -%>
+      </div>
+    </div>
+
+    <div class="col-lg-3" style="margin-top:3px;">
+      <%= will_paginate @dnotes, :previous_label => '<', :next_label => '>' %>
+    </div>
+
+    <div class="col-lg-3" style="display:inline-block;text-align:right;float:right;">
+      <!-- <i class="glyphicon glyphicon-refresh" id="btn_refresh_device" style="cursor:pointer"></i>
+      &nbsp; -->
+      <%= simple_form_for :filter, :method=>'get', :remote=>true, :html=>{:id=>'form_security_filter', :style=>'display:inline-block;'} do |f| %>
+        <%= text_field_tag :filter_word, nil, :class=>'form-control', :style=>'display:inline-block;padding-right:90px;', :value=>@filter_word %>
+        <%= hidden_field_tag "device_name", nil, :value=>@dname %>
+        <%= button_tag(:class=>'btn btn-primary btn-reply2 btn-device', :id=>'btn_filter_devices', :style=>'margin-top:-54px;') do %>
+          Filter&nbsp;&nbsp;<i class="glyphicon glyphicon-filter" style="font-size:14px;position:relative;top:3px;color:ine"></i>
+        <% end %>
+      <% end %>
+    </div>    
+  </div>
+
+
+  <table class="listing" id="table_security" style="margin-top:20px;">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Device Name</th>
+        <th>Activity</th>
+        <th>Request Order</th>
+        <th>Status</th>
+        <th>Worked Date</th>
+        <th style="text-align:center;">Action</th>
+        <!-- <th>Delete</th> -->
+      </tr>
+    </thead>
+
+    <tbody>
+      <% if @dnotes.blank? %>
+        <tr>
+          <td></td>
+          <td colspan="7">No Logs</td>
+        </tr>
+      <% else %>
+        <% @dnotes.each do |device| %>
+          <tr id="tr_dnote_<%=device.id%>">
+            <td style="color:transparent;"><%=device.id%></td>
+            <%
+            if pro_action(device.is_checked) == "Pending" 
+              bd = true
+            else 
+              bd = false
+            end 
+           %>
+            <td class="clickable">
+              <%#= raw(get_colorspan(bd, '<i class="fa fa-fw fa-cog" style="font-size:16px;"></i>')) %>
+              <%#= raw(get_colorspan(bd,processblank(device.device_name))) %>
+              <%= raw(processblank(device.device_name)) %>
+            </td>
+            <td class="clickable">
+              <% if device.device_status == 'Deactive' %>
+                <%#= raw(get_colorspan(bd, '<i class="fa fa-fw fa-times-circle" style="font-size:16px;"></i>')) %>
+                <i class="fa fa-fw fa-times-circle" style="font-size:16px;"></i>
+              <% else %>
+                <%#= raw(get_colorspan(bd, '<i class="fa fa-fw fa-check-circle" style="font-size:16px;"></i>')) %>
+                <i class="fa fa-fw fa-check-circle" style="font-size:16px;"></i>
+              <% end %>
+              <%#= raw(get_colorspan(bd,processblank(device.device_status))) %>
+              <%= processblank(device.device_status) %>
+            </td>
+            <td class="clickable">
+              <% if processblank(pro_action(device.request_order)) != '---' %>
+                <%#= raw(get_colorspan(bd, '<i class="fa fa-fw fa-tag" style="font-size:16px;"></i>')) %>
+                <i class="fa fa-fw fa-tag" style="font-size:16px;"></i>
+              <% end %>
+              <%#= raw(get_colorspan(bd,processblank(device.request_order))) %>
+              <%= raw(processblank(device.request_order)) %>
+            </td>
+            <td class="clickable">
+              <% if bd %>
+                <%= raw(get_colorspan(bd, '<i class="fa fa-fw fa-spinner" style="font-size:16px;"></i>')) %>
+              <% else %>
+                <i class="fa fa-fw fa-check-circle" style="font-size:16px;"></i>
+              <% end %> 
+              <%= raw(get_colorspan(bd,processblank(pro_action(device.is_checked)))) %>
+            </td>
+            <td class="clickable">
+              <%= raw(get_colorspan(bd, '<i class="fa fa-fw fa-clock-o" style="font-size:16px;"></i>')) %>
+              <%= raw(get_colorspan(bd,processblank(time_ago_in_words(device.updated_at)))) %>&nbsp;<%= raw(get_colorspan(bd,"ago"))%>
+            </td>
+            <td class="clickable devicelog_td_5" style="text-align:center;">
+              <% if pro_action(device.is_checked) == "Pending" %>
+                <%= simple_form_for :dnote_id, :method=>'get', :remote=>true, :html=>{:id=>'form_delete_slog'} do |f| %>
+                  <%= hidden_field_tag "dnote_id", nil, :value=>device.id.to_s %>
+                  <%= hidden_field_tag "device_name", nil, :value=>device.device_name %>
+                  <%= button_tag(type:"submit", :style=>'background-color:transparent;font-weight:100;border:none;') do %>
+                    <i class="fa fa-fw fa-times-circle" style="font-size:16px;color:white"></i>&nbsp;Cancel
+                  <% end %>
+                <% end %>
+              <% else %>
+                ---
+              <% end %>
+            </td>
+          </tr>            
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+  <br>
+</div>
+
+<script>
+  var headertext = [],
+  headers = document.querySelectorAll('#table_security th'),
+  tablerows = document.querySelectorAll('#table_security th'),
+  table_body = document.querySelector('#table_security tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 2, col; col = row.cells[j]; j++) {
+      if ( headertext[j] )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( j != 6 ) {
+        col.setAttribute('style', 'text-align:left;');
+      }
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+    }
+  }
+
+  function update_span(sid) {
+    var nc = $.trim($(sid).text());
+    nc = nc - 1;
+    $(sid).text(nc);
+    $(sid).val(nc);
+  }
+
+  $(function() {
+    $('.pagination a').attr('data-remote', 'true');
+    // $('#select_security_rows').attr('data-remote', 'true');
+  });
+</script>

@@ -1,0 +1,8 @@
+<%= form_tag('/tickets', method: :get) do -%>
+  <div class="col-md-8">
+    <%= %>
+  </div>
+  <div class="col-md-2" style="text-align:right">
+    <%= submit_tag 'Reply', :class=>'btn btn-primary' %>
+  </div>
+<% end -%>

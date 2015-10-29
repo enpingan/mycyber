@@ -1,0 +1,90 @@
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <!-- Notification bar -->
+  <div style="background-color:#333">
+    <div class="navbar-header" id="top1">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="navbar-collapse2" id="narrow_bar">
+      <ul class="nav navbar-nav navbar-left" style="padding-left:12px;">
+        <li><a href="/tickets/new"><i class="glyphicon glyphicon-question-sign"></i>&nbsp;&nbsp;<%= %>HELP</a></li>
+        <li><a href="/"><i class="glyphicon glyphicon-comment"></i>&nbsp;&nbsp;<%= %>CONTACT</a></li>
+        <li>
+          <% if @dnote_count.to_i != 0 %>
+            <a href="/devices/security">
+          <% else %>
+            <a href="/tickets">
+          <% end %>
+            <i class="glyphicon glyphicon-exclamation-sign"></i>
+            &nbsp;&nbsp;
+            <%= @note_count.to_i + @dnote_count.to_i %>
+            NOTIFICATIONS
+          </a>
+        </li>
+        <li><a href="/tickets"><i class="glyphicon glyphicon-tags"></i>&nbsp;&nbsp;<%= @open_tickets %> OPEN TICKETS</a></li>
+      </ul>
+
+      <p class="navbar-text pull-right">
+      <% if user_signed_in? %>
+        <!-- Logged in as <strong><%= current_user.email %> </strong> -->
+        Logged in as <strong><%= link_to current_user.username, customers_url, :class=>'navbar-link' %> </strong>
+        <%#= link_to "Edit_Profile", edit_user_registration_path, :class=>'navbar-link' %> |
+        <%= link_to "Logout", destroy_user_session_path, method: :delete, :class=>'btn btn-primary btn-reply2 btn-device btn-logout' %>
+      <% else %>
+        <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link' %> |
+        <%= link_to "Login", new_user_session_path, :class => 'navbar-link' %>
+      <% end %>
+    </div>       
+  </div>
+  <!-- Logo Nav bar -->
+  <div>
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" style="padding:0 0;padding-left:25px;">
+        <%= image_tag("logo.png", height:'48', width: '32') %>
+        <span style="margin-top:-35px;display:block;margin-left:50px;">CyberAdvance</span>
+      </a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <!-- <ul class="nav navbar-nav navbar-left" style="padding-left:25px;">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Devices<span class="caret"></span></a>
+          <ul class="dropdown-menu" style="text-align:left;left:0px;background-color:#222222;padding:0 0;">
+            <li style="padding:10px 0;margin: 0px;"><a href="/devices" style="color:#999;">Device List</a></li>
+            <li style="padding:10px 0;margin: 0px;"><a href="/" style="color:#999;">Manage</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Support<span class="caret"></span></a>
+          <ul class="dropdown-menu" style="text-align:left;left:0px;background-color:#222222;padding:0 0;">
+            <li style="padding:10px 0;margin: 0px;"><a href="/tickets/new" style="color:#999;">Add Ticket</a></li>
+            <li style="padding:10px 0;margin: 0px;"><a href="/tickets" style="color:#999;">Tickets</a></li>
+            <li style="padding:10px 0;margin: 0px;"><a href="/tickets" style="color:#999;">Events</a></li>
+            <li style="padding:10px 0;margin: 0px;"><a href="/tickets" style="color:#999;">SSL VPN Login</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account<span class="caret"></span></a>
+          <ul class="dropdown-menu" style="text-align:left;left:0px;background-color:#222222;padding:0 0;">
+            <li style="padding:10px 0;margin: 0px;"><a href="/" style="color:#999;">Sales</a></li>
+            <li style="padding:10px 0;margin: 0px;"><a href="/users/edit" style="color:#999;">Users</a></li>
+            <li style="padding:10px 0;margin: 0px;"><a href="/" style="color:#999;">Manage</a></li>
+          </ul>
+        </li>
+      </ul> -->
+      <ul class="nav navbar-nav navbar-left" style="padding-left:25px;">
+        <li><a href="/devices">Device</a></li>
+        <li><a href="/tickets">Tickets</a></li>
+        <li><a href="/customers">Account</a></li>
+      </ul>
+    </div>         
+  </div>
+</div>

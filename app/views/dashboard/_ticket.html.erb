@@ -1,0 +1,83 @@
+
+<ul class="nav navbar-nav navbar-right" id="ticket_ul">
+  <li><%= will_paginate @devices, :previous_label => '<', :next_label => '>' %></li>
+  <li><i class="glyphicon glyphicon-refresh" id="btn_refresh_device" style="cursor:pointer"></i></li>
+</ul>
+<table class="listing" id="admin_table_devices">
+  <thead>
+    <tr>
+      <th></th>
+      <th style="width:20%">Name</th>
+      <th><i class="fa fa-fw fa-laptop"></i>&nbsp;Type</th>
+      <th><i class="fa fa-fw fa-globe"></i>&nbsp;Location</th>
+      <th><i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Public ip</th>
+      <th><i class="fa fa-fw fa-exclamation-circle"></i>&nbsp;Private ip</th>
+      <th><i class="fa fa-fw fa-calendar"></i>&nbsp;Start Date</th>
+      <!-- <th>Modify</th> -->
+      <!-- <th>Delete</th> -->
+    </tr>
+  </thead>
+
+  <tbody>
+    <% if @devices.blank? %>
+      <tr>
+        <td colspan="1"></td>
+        <td colspan="6">No Devices</td>
+      </tr>
+    <% else %>
+      <% @devices.each do |device| %>
+        <tr>
+          <td><i class="fa fa-fw fa-cog"></i></td>
+          <td><%= processblank(device.name) %></td>
+          <td><%= processblank(device.device_type) %></td>
+          <td><%= raw(getflag_floc(device.location)) + ' ' + device.location %></td>
+          <td><%= processblank(device.public_ip) %></td>
+          <td><%= processblank(device.private_ip) %></td>
+          <td><%= processblank(device.created_at.to_date) %></td>
+          <!-- <td><%#= link_to 'Show', device %></td> -->
+          <!-- <td><%#= link_to 'Edit', edit_device_path(device), :class=>'btn btn-primary' %></td> -->
+          <!-- <td><%#= link_to 'Destroy', device, method: :delete, data: { confirm: 'Are you sure?' }, :class=>'btn btn-primary' %></td> -->
+        </tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>
+
+<script>
+  $('#ticket .pagination a').on('click', function() {
+    $('#device .pagination').attr('updated', 'false');
+    $('#ticket .pagination').attr('updated', 'true');
+  });
+
+  var headertext = [],
+  headers = document.querySelectorAll('#admin_table_devices th'),
+  tablerows = document.querySelectorAll('#admin_table_devices th'),
+  table_body = document.querySelector('#admin_table_devices tbody');
+
+  for (var i = 0; i < headers.length; i++) {
+    var current = headers[i];
+
+    headertext.push(current.textContent.replace(/\r?\n|\r/,""));
+  }
+
+  for (var i = 0, row; row = table_body.rows[i]; i++) { 
+    for(var j = 2, col; col = row.cells[j]; j++) {
+      if ( headertext[j] )  {
+        col.setAttribute('data-th', headertext[j]);
+      }
+
+      if ( i%2 == 1 ) {
+        col.setAttribute('style', 'border:none;');  
+      }
+      col.setAttribute('style', 'text-align:left;');
+      // console.log(col);
+      // console.log(headertext[j]);
+    }
+
+    if ( i%2 == 1 ) {
+      col = row.cells[0];
+      // col.setAttribute('data-th', 'Detail');  
+    }
+
+  }
+</script>

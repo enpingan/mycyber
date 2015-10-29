@@ -1,0 +1,26 @@
+<br/><% up_ind = 0 %>
+<% @comments.each do |comment| %>
+  <% if comment.ticket_id == ticket.id.to_s %>
+
+    <div class="col-lg-2 sub-comment" style="padding-top:10px;text-align:center;">
+      <span>
+        <% if comment.ticket_owner == "CyberAdvance" %>
+          <%= image_tag('logo.png', width: '16', height: '24') %>&nbsp;&nbsp;<font style="font-size:14px;">CyberAdvance</font>
+        <% else %>
+          <i class="fa fa-user"></i>&nbsp;&nbsp;<%= comment.ticket_owner.split("@").first %>
+        <% end %>
+      </span>
+    </div>
+    <div class="col-lg-9 sub-comment" style="background-color:rgba(0, 67, 116, 0.37);padding:10px 16px;"><!-- #004374 -->
+      <div class="triangle">
+      </div>
+      <%= comment.comment%><br/><br/>
+      [Update <%= comments_by_ticketid(ticket.id)-up_ind %>]
+      <% up_ind = up_ind + 1 %>
+      <br/>
+    </div>
+    <div class="col-lg-1 sub-comment" style="padding-left:0px;padding-right:0px;text-align:right">
+      <%= time_ago_in_words(comment.updated_at) %> ago
+    </div>
+  <% end %>
+<% end %>

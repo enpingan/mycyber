@@ -1,0 +1,238 @@
+// Place all the styles related to the tickets controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.comment-edit {
+  width: 100%;
+  height: 64px;
+  border: 1px solid #343434;
+  padding: 5px 12px;
+  color: black;
+
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.div-comment {
+  width: 100%;
+  padding:12px 20px;
+  /*background-color: #898989;*/
+  font-weight: normal;
+  color: white;
+  font-size: 10px;
+
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.btn-reply, .btn-reply2 {
+  background-color: #337ab7;
+}
+
+.btn-reply:hover, .btn-reply2:hover {
+  background-color: #2e6da4;
+  color: white;
+}
+
+.sub-comment {
+  margin-top: 12px;
+
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+     -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+          box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+
+.field select {
+  width: 100%;
+  font-size: 24px;
+}
+
+.triangle {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  left: -8px;
+
+  border-width: 8px 8px 8px 0;
+  border-color: transparent rgba(0, 67, 116, 0.5) transparent transparent;/*#004374*/
+  line-height: 0px;
+  _border-color: #000000 rgba(0, 67, 116, 0.7) #000000 #000000;/*#004374*/
+  _filter: progid:DXImageTransform.Microsoft.Chroma(color='#000000');
+}
+
+/*Dropdown*/
+
+.mycontainer {
+  margin: 80px auto;
+  width: 400px;
+  text-align: center;
+}
+
+.mycontainer > .dropdown {
+  margin: 0 20px;
+  vertical-align: top;
+}
+
+.dropdown {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 38px;
+  width: 150px;
+  background: #f2f2f2;
+  border: 1px solid;
+  border-color: white #f7f7f7 whitesmoke;
+  border-radius: 3px;
+  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
+  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
+  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.06));
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.06));
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown:before, .dropdown:after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 4px dashed;
+  border-color: #888888 transparent;
+  pointer-events: none;
+}
+
+.dropdown:before {
+  border-bottom-style: solid;
+  border-top: none;
+}
+
+.dropdown:after {
+  margin-top: 7px;
+  border-top-style: solid;
+  border-bottom: none;
+}
+
+.dropdown-select {
+  position: relative;
+  width: 130%;
+  margin: 0;
+  padding: 6px 8px 6px 10px;
+  height: 34px;
+  line-height: 14px;
+  font-size: 12px;
+  color: #62717a;
+  text-shadow: 0 1px white;
+  background: #f2f2f2; /* Fallback for IE 8 */
+  background: rgba(0, 0, 0, 0) !important; /* "transparent" doesn't work with Opera */
+  border: 0;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.dropdown-select:focus {
+  z-index: 3;
+  width: 100%;
+  color: #394349;
+  outline: 2px solid #49aff2;
+  outline: 2px solid -webkit-focus-ring-color;
+  outline-offset: -2px;
+
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+}
+
+.dropdown-select > option {
+  margin: 3px;
+  padding: 6px 8px;
+  text-shadow: none;
+  background: #f2f2f2;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Fix for IE 8 putting the arrows behind the select element. */
+
+.lt-ie9 .dropdown {
+  z-index: 1;
+}
+
+.lt-ie9 .dropdown-select {
+  z-index: -1;
+}
+
+.lt-ie9 .dropdown-select:focus {
+  z-index: 3;
+}
+
+/* Dirty fix for Firefox adding padding where it shouldn't. */
+
+@-moz-document url-prefix() {
+  .dropdown-select {
+    padding-left: 6px;
+  }
+}
+
+.dropdown-dark {
+  /*background: #1F689E;*/
+  background: rgba(31, 104, 158, 0.3);
+  border-color: #1F689E #0a0a0a black;
+  color: white;
+  width: 100%;
+  border-style: none;
+  height: 34px;
+  background-image: -webkit-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: -moz-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: -o-linear-gradient(top, transparent, rgba(0, 0, 0, 0.4));
+  background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.4));
+  -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.1), 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-dark .small {
+  background: #3F38FE;
+}
+
+.dropdown-dark:before {
+  border-bottom-color: white;
+}
+
+.dropdown-dark:after {
+  border-top-color: white;
+}
+
+.dropdown-dark .dropdown-select {
+  color: white;
+  text-shadow: 0 1px black;
+  background: #444;  /* Fallback for IE 8 */
+}
+
+.dropdown-dark .dropdown-select:focus {
+  color: #ccc;
+}
+
+.dropdown-dark .dropdown-select > option {
+  background: #444;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.4);
+}
+
+.btn-logout {
+  font-size: 10px;
+  height: 21px;
+  padding: 3px 9px;
+}

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  group: MyString
+  subject: MyString
+  owner: MyString
+  last_replied: MyString
+  device: MyString
+  updated: MyString
+
+two:
+  group: MyString
+  subject: MyString
+  owner: MyString
+  last_replied: MyString
+  device: MyString
+  updated: MyString
