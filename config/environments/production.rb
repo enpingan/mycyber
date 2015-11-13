@@ -80,13 +80,23 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
   # SMTP settings for cyberadvance
-  config.action_mailer.smtp_settings = {
+  ActionMailer::Base.smtp_settings = {
     :address              => "smtp.cyberadvance.com",
     :port                 => 587,
+    :domain               => "www.cyberadvance.com",
     :user_name            => "support@cyberadvance.com",
     :password             => "Cyber77",
     :authentication       => "plain",
-    :enable_starttls_auto => true # changed from true
+    :enable_starttls_auto => true,
+    :openssl_verify_mode  => 'none'
   }
+  # config.action_mailer.smtp_settings = {
+  #   :address              => "smtp.cyberadvance.com",
+  #   :port                 => 587,
+  #   :user_name            => "support@cyberadvance.com",
+  #   :password             => "Cyber77",
+  #   :authentication       => "plain",
+  #   :enable_starttls_auto => true # changed from true
+  # }
   
 end
